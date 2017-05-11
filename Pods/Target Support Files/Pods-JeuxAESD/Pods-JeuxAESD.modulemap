@@ -1,0 +1,6 @@
+framework module Pods_JeuxAESD {
+  umbrella header "Pods-JeuxAESD-umbrella.h"
+
+  export *
+  module * { export * }
+}

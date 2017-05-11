@@ -1,0 +1,6 @@
+framework module Pods_JeuxAESDUITests {
+  umbrella header "Pods-JeuxAESDUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
