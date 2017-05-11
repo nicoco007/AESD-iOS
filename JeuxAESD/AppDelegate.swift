@@ -6,16 +6,32 @@
 //  Copyright © 2017 Nicolas Gnyra. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
+    var debugDevices: [String] = [/*"46F50809-7234-47E6-883E-37DBFDEF6E78"*/]
+    
+    static var isDebugDevice: Bool = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        Logger.verboseEnabled = false
+        
+        NotificationHelper.register()
+        
+        if UIDevice.current.identifierForVendor?.uuidString != nil {
+            if debugDevices.contains(UIDevice.current.identifierForVendor!.uuidString) {
+                Logger.debug("Running debug device")
+                AppDelegate.isDebugDevice = true
+            } else {
+                Logger.debug("To define this device as a debug device, add this ID: " + UIDevice.current.identifierForVendor!.uuidString)
+            }
+        }
+        
         return true
     }
 
@@ -44,3 +60,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+extension Formatter {
+    static let iso8601: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        return formatter
+    }()
+}
